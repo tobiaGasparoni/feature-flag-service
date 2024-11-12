@@ -11,17 +11,17 @@ const serverless = require("serverless-http");
 
 const app = express();
 
-const USERS_TABLE = process.env.USERS_TABLE;
+const FEATURE_FLAGS_TABLE = process.env.FEATURE_FLAGS_TABLE;
 const client = new DynamoDBClient();
 const docClient = DynamoDBDocumentClient.from(client);
 
 app.use(express.json());
 
-app.get("/users/:userId", async (req, res) => {
+app.get("/featureFlags/:featureFlagId", async (req, res) => {
   const params = {
-    TableName: USERS_TABLE,
+    TableName: FEATURE_FLAGS_TABLE,
     Key: {
-      userId: req.params.userId,
+      featureFlagId: req.params.featureFlagId,
     },
   };
 
@@ -29,39 +29,39 @@ app.get("/users/:userId", async (req, res) => {
     const command = new GetCommand(params);
     const { Item } = await docClient.send(command);
     if (Item) {
-      const { userId, name } = Item;
-      res.json({ userId, name });
+      const { featureFlagId, name } = Item;
+      res.json({ featureFlagId, name });
     } else {
       res
         .status(404)
-        .json({ error: 'Could not find user with provided "userId"' });
+        .json({ error: 'Could not find feature flag with provided "featureFlagId"' });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Could not retrieve user" });
+    res.status(500).json({ error: "Could not retrieve feature flag" });
   }
 });
 
-app.post("/users", async (req, res) => {
-  const { userId, name } = req.body;
-  if (typeof userId !== "string") {
-    res.status(400).json({ error: '"userId" must be a string' });
+app.post("/featureFlags", async (req, res) => {
+  const { featureFlagId, name } = req.body;
+  if (typeof featureFlagId !== "string") {
+    res.status(400).json({ error: '"featureFlagId" must be a string' });
   } else if (typeof name !== "string") {
     res.status(400).json({ error: '"name" must be a string' });
   }
 
   const params = {
-    TableName: USERS_TABLE,
-    Item: { userId, name },
+    TableName: FEATURE_FLAGS_TABLE,
+    Item: { featureFlagId, name },
   };
 
   try {
     const command = new PutCommand(params);
     await docClient.send(command);
-    res.json({ userId, name });
+    res.json({ featureFlagId, name });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Could not create user" });
+    res.status(500).json({ error: "Could not create feature flag" });
   }
 });
 

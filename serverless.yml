@@ -8,7 +8,7 @@ service: feature-flags-service
 stages:
   default:
     params:
-      tableName: "users-table-${sls:stage}"
+      tableName: "feature-flags-table-${sls:stage}"
 
 provider:
   name: aws
@@ -25,9 +25,9 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource:
-            - Fn::GetAtt: [UsersTable, Arn]
+            - Fn::GetAtt: [FeatureFlagsTable, Arn]
   environment:
-    USERS_TABLE: ${param:tableName}
+    FEATURE_FLAGS_TABLE: ${param:tableName}
 
 functions:
   api:
@@ -37,14 +37,14 @@ functions:
 
 resources:
   Resources:
-    UsersTable:
+    FeatureFlagsTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: userId
+          - AttributeName: featureFlagId
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: featureFlagId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${param:tableName}
