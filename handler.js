@@ -49,10 +49,11 @@ app.post("/featureFlags", async (req, res) => {
   } else if (typeof name !== "string") {
     res.status(400).json({ error: '"name" must be a string' });
   }
+  const nameEnhanced = name + ' BUT ENHANCED'
 
   const params = {
     TableName: FEATURE_FLAGS_TABLE,
-    Item: { featureFlagId, name },
+    Item: { featureFlagId, name, nameEnhanced },
   };
 
   try {
