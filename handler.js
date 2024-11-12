@@ -59,7 +59,7 @@ app.post("/featureFlags", async (req, res) => {
   try {
     const command = new PutCommand(params);
     await docClient.send(command);
-    res.json({ featureFlagId, name });
+    res.json({ featureFlagId, name, nameEnhanced });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Could not create feature flag" });
