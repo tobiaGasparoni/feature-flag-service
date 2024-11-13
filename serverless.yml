@@ -1,6 +1,6 @@
 org: tobiagasparonidemo
-app: feature-flag-service
-service: serverless-dynamodb-api
+app: feature-flags-service
+service: feature-flags-service
 
 provider:
   name: aws
