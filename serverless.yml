@@ -1,6 +1,6 @@
-org: tobiagasparonidemo
-app: feature-flags-service
-service: feature-flags-service
+org: tobia-gasparoni
+app: feature-flags
+service: flag-management
 
 provider:
   name: aws
