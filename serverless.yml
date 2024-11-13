@@ -1,50 +1,68 @@
-# "org" ensures this Service is used with the correct Serverless Framework Access Key.
-org: tobiagasparonidemo
-# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
-app: feature-flag-service
-# "service" is the name of this project. This will also be added to your AWS resource names.
-service: feature-flags-service
-
-stages:
-  default:
-    params:
-      tableName: "feature-flags-table-${sls:stage}"
+service: serverless-dynamodb-api
 
 provider:
   name: aws
   runtime: nodejs20.x
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-          Resource:
-            - Fn::GetAtt: [FeatureFlagsTable, Arn]
+  region: us-east-1
   environment:
-    FEATURE_FLAGS_TABLE: ${param:tableName}
+    DYNAMODB_TABLE: FeatureFlags  # replace with your table name
 
-functions:
-  api:
-    handler: handler.handler
-    events:
-      - httpApi: "*"
-
+# Define resources, including DynamoDB table
 resources:
   Resources:
-    FeatureFlagsTable:
+    MyDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
         AttributeDefinitions:
-          - AttributeName: featureFlagId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: featureFlagId
+          - AttributeName: id
             KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
-        TableName: ${param:tableName}
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+functions:
+  createItem:
+    handler: handler.createItem
+    events:
+      - http:
+          path: items
+          method: post
+          cors: true
+
+  getItem:
+    handler: handler.getItem
+    events:
+      - http:
+          path: items/{id}
+          method: get
+          cors: true
+
+  updateItem:
+    handler: handler.updateItem
+    events:
+      - http:
+          path: items/{id}
+          method: put
+          cors: true
+
+  deleteItem:
+    handler: handler.deleteItem
+    events:
+      - http:
+          path: items/{id}
+          method: delete
+          cors: true
+
+# IAM Permissions to allow Lambda to access DynamoDB
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:PutItem"
+        - "dynamodb:GetItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"

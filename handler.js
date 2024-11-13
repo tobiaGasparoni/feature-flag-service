@@ -1,75 +1,90 @@
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const AWS = require('aws-sdk');
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const { v4: uuidv4 } = require('uuid');  // For generating unique IDs
 
-const {
-  DynamoDBDocumentClient,
-  GetCommand,
-  PutCommand,
-} = require("@aws-sdk/lib-dynamodb");
-
-const express = require("express");
-const serverless = require("serverless-http");
-
-const app = express();
-
-const FEATURE_FLAGS_TABLE = process.env.FEATURE_FLAGS_TABLE;
-const client = new DynamoDBClient();
-const docClient = DynamoDBDocumentClient.from(client);
-
-app.use(express.json());
-
-app.get("/featureFlags/:featureFlagId", async (req, res) => {
+// Create an item
+module.exports.createItem = async (event) => {
+  const data = JSON.parse(event.body);
   const params = {
-    TableName: FEATURE_FLAGS_TABLE,
-    Key: {
-      featureFlagId: req.params.featureFlagId,
+    TableName: process.env.DYNAMODB_TABLE,
+    Item: {
+      id: uuidv4(),  // unique identifier
+      ...data,       // additional fields
     },
   };
 
   try {
-    const command = new GetCommand(params);
-    const { Item } = await docClient.send(command);
-    if (Item) {
-      const { featureFlagId, name } = Item;
-      res.json({ featureFlagId, name });
-    } else {
-      res
-        .status(404)
-        .json({ error: 'Could not find feature flag with provided "featureFlagId"' });
-    }
+    await dynamoDb.put(params).promise();
+    return {
+      statusCode: 201,
+      body: JSON.stringify({ message: 'Item created successfully' }),
+    };
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Could not retrieve feature flag" });
+    return { statusCode: 500, body: JSON.stringify({ error: 'Could not create item' }) };
   }
-});
+};
 
-app.post("/featureFlags", async (req, res) => {
-  const { featureFlagId, name } = req.body;
-  if (typeof featureFlagId !== "string") {
-    res.status(400).json({ error: '"featureFlagId" must be a string' });
-  } else if (typeof name !== "string") {
-    res.status(400).json({ error: '"name" must be a string' });
-  }
-  const nameEnhanced = name + ' BUT ENHANCED'
-
+// Get an item by ID
+module.exports.getItem = async (event) => {
   const params = {
-    TableName: FEATURE_FLAGS_TABLE,
-    Item: { featureFlagId, name, nameEnhanced },
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },
   };
 
   try {
-    const command = new PutCommand(params);
-    await docClient.send(command);
-    res.json({ featureFlagId, name, nameEnhanced });
+    const result = await dynamoDb.get(params).promise();
+    if (!result.Item) {
+      return { statusCode: 404, body: JSON.stringify({ error: 'Item not found' }) };
+    }
+    return { statusCode: 200, body: JSON.stringify(result.Item) };
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Could not create feature flag" });
+    return { statusCode: 500, body: JSON.stringify({ error: 'Could not retrieve item' }) };
   }
-});
+};
 
-app.use((req, res, next) => {
-  return res.status(404).json({
-    error: "Not Found",
-  });
-});
+// Update an item by ID
+module.exports.updateItem = async (event) => {
+  const data = JSON.parse(event.body);
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },
+    UpdateExpression: 'set #name = :name, #value = :value',  // Example attributes
+    ExpressionAttributeNames: {
+      '#name': 'name',
+      '#value': 'value',
+    },
+    ExpressionAttributeValues: {
+      ':name': data.name,
+      ':value': data.value,
+    },
+    ReturnValues: 'UPDATED_NEW',
+  };
 
-exports.handler = serverless(app);
+  try {
+    const result = await dynamoDb.update(params).promise();
+    return { statusCode: 200, body: JSON.stringify(result.Attributes) };
+  } catch (error) {
+    return { statusCode: 500, body: JSON.stringify({ error: 'Could not update item' }) };
+  }
+};
+
+// Delete an item by ID
+module.exports.deleteItem = async (event) => {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      id: event.pathParameters.id,
+    },
+  };
+
+  try {
+    await dynamoDb.delete(params).promise();
+    return { statusCode: 200, body: JSON.stringify({ message: 'Item deleted successfully' }) };
+  } catch (error) {
+    return { statusCode: 500, body: JSON.stringify({ error: 'Could not delete item' }) };
+  }
+};
