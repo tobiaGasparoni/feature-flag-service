@@ -1,3 +1,5 @@
+org: tobiagasparonidemo
+app: feature-flag-service
 service: serverless-dynamodb-api
 
 provider:
