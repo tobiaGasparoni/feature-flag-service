@@ -7,6 +7,16 @@ provider:
   environment:
     DYNAMODB_TABLE: FeatureFlags  # replace with your table name
 
+  # Move iamRoleStatements here under provider
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:PutItem"
+        - "dynamodb:GetItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
 # Define resources, including DynamoDB table
 resources:
   Resources:
@@ -56,13 +66,3 @@ functions:
           path: items/{id}
           method: delete
           cors: true
-
-# IAM Permissions to allow Lambda to access DynamoDB
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "dynamodb:PutItem"
-        - "dynamodb:GetItem"
-        - "dynamodb:UpdateItem"
-        - "dynamodb:DeleteItem"
-      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
