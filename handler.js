@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');  // For generating unique IDs
 module.exports.createItem = async (event) => {
   const data = JSON.parse(event.body);
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.FEATURE_FLAGS_TABLE,
     Item: {
       id: uuidv4(),  // unique identifier
       ...data,       // additional fields
@@ -17,7 +17,10 @@ module.exports.createItem = async (event) => {
     await dynamoDb.put(params).promise();
     return {
       statusCode: 201,
-      body: JSON.stringify({ message: 'Item created successfully' }),
+      body: JSON.stringify({
+        message: 'Item created successfully',
+        newItemData: params.Item
+      }),
     };
   } catch (error) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Could not create item' }) };
@@ -27,7 +30,7 @@ module.exports.createItem = async (event) => {
 // Get an item by ID
 module.exports.getItem = async (event) => {
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.FEATURE_FLAGS_TABLE,
     Key: {
       id: event.pathParameters.id,
     },
@@ -48,7 +51,7 @@ module.exports.getItem = async (event) => {
 module.exports.updateItem = async (event) => {
   const data = JSON.parse(event.body);
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.FEATURE_FLAGS_TABLE,
     Key: {
       id: event.pathParameters.id,
     },
@@ -75,7 +78,7 @@ module.exports.updateItem = async (event) => {
 // Delete an item by ID
 module.exports.deleteItem = async (event) => {
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.FEATURE_FLAGS_TABLE,
     Key: {
       id: event.pathParameters.id,
     },

@@ -6,8 +6,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  stage: ${opt:stage, 'stg'}  # Defaults to 'stg' if no stage is specified
   environment:
-    DYNAMODB_TABLE: FeatureFlags  # replace with your table name
+    FEATURE_FLAGS_TABLE: ${self:custom.tableName.${self:provider.stage}}
 
   # Move iamRoleStatements here under provider
   iamRoleStatements:
@@ -17,7 +18,12 @@ provider:
         - "dynamodb:GetItem"
         - "dynamodb:UpdateItem"
         - "dynamodb:DeleteItem"
-      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.FEATURE_FLAGS_TABLE}"
+
+custom:
+  tableName:
+    stg: "feature-flags-table-stg"
+    prd: "feature-flags-table-prd"
 
 # Define resources, including DynamoDB table
 resources:
@@ -25,7 +31,7 @@ resources:
     MyDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        TableName: ${self:provider.environment.FEATURE_FLAGS_TABLE}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
