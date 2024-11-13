@@ -5,11 +5,16 @@ const { v4: uuidv4 } = require('uuid');  // For generating unique IDs
 // Create an item
 module.exports.createItem = async (event) => {
   const data = JSON.parse(event.body);
+  if (data.name === null || data.name === '') {
+    return { statusCode: 400, body: JSON.stringify({ error: '"name" must not be empty or null' }) };
+  }
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
     Item: {
       id: uuidv4(),  // unique identifier
-      ...data,       // additional fields
+      name: data.name,
+      isEnabled: false,
+      createdAt: Date.now()
     },
   };
 
@@ -55,14 +60,12 @@ module.exports.updateItem = async (event) => {
     Key: {
       id: event.pathParameters.id,
     },
-    UpdateExpression: 'set #name = :name, #value = :value',  // Example attributes
+    UpdateExpression: 'set #name = :value',  // Example attributes
     ExpressionAttributeNames: {
-      '#name': 'name',
-      '#value': 'value',
+      '#name': 'isEnabled'
     },
     ExpressionAttributeValues: {
-      ':name': data.name,
-      ':value': data.value,
+      ':value': data.isEnabled,
     },
     ReturnValues: 'UPDATED_NEW',
   };
