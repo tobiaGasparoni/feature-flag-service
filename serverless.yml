@@ -43,34 +43,34 @@ resources:
           WriteCapacityUnits: 5
 
 functions:
-  createItem:
-    handler: handler.createItem
+  createFeatureFlag:
+    handler: handler.createFeatureFlag
     events:
       - http:
-          path: items
+          path: featureFlags
           method: post
           cors: true
 
-  getItem:
-    handler: handler.getItem
+  getFeatureFlag:
+    handler: handler.getFeatureFlag
     events:
       - http:
-          path: items/{id}
+          path: featureFlags/{id}
           method: get
           cors: true
 
-  updateItem:
-    handler: handler.updateItem
+  updateFeatureFlag:
+    handler: handler.updateFeatureFlag
     events:
       - http:
-          path: items/{id}
+          path: featureFlags/{id}
           method: put
           cors: true
 
-  deleteItem:
-    handler: handler.deleteItem
+  deleteFeatureFlag:
+    handler: handler.deleteFeatureFlag
     events:
       - http:
-          path: items/{id}
+          path: featureFlags/{id}
           method: delete
           cors: true

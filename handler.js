@@ -2,8 +2,8 @@ const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const { v4: uuidv4 } = require('uuid');  // For generating unique IDs
 
-// Create an item
-module.exports.createItem = async (event) => {
+// Create a feature flag
+module.exports.createFeatureFlag = async (event) => {
   const data = JSON.parse(event.body);
   if (data.name === null || data.name === '') {
     return { statusCode: 400, body: JSON.stringify({ error: '"name" must not be empty or null' }) };
@@ -32,8 +32,8 @@ module.exports.createItem = async (event) => {
   }
 };
 
-// Get an item by ID
-module.exports.getItem = async (event) => {
+// Get a feature flag by ID
+module.exports.getFeatureFlag = async (event) => {
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
     Key: {
@@ -52,8 +52,8 @@ module.exports.getItem = async (event) => {
   }
 };
 
-// Update an item by ID
-module.exports.updateItem = async (event) => {
+// Update a feature flag by ID
+module.exports.updateFeatureFlag = async (event) => {
   const data = JSON.parse(event.body);
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
@@ -78,8 +78,8 @@ module.exports.updateItem = async (event) => {
   }
 };
 
-// Delete an item by ID
-module.exports.deleteItem = async (event) => {
+// Delete a feature flag by ID
+module.exports.deleteFeatureFlag = async (event) => {
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
     Key: {
