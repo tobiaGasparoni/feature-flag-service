@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');  // For generating unique IDs
 // Create an item
 module.exports.createItem = async (event) => {
   const data = JSON.parse(event.body);
-  if (data.name !== null && data.name !== '') {
+  if (data.name === null || data.name === '') {
     return { statusCode: 400, body: JSON.stringify({ error: '"name" must not be empty or null' }) };
   }
   const params = {
