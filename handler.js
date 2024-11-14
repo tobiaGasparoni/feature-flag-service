@@ -28,7 +28,12 @@ module.exports.createFeatureFlag = async (event) => {
       }),
     };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: `Could not create item: ${error}` }) };
+    // Log the error message to AWS
+    console.error('Error creating item:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Could not create item' })
+    };
   }
 };
 
@@ -44,11 +49,22 @@ module.exports.getFeatureFlag = async (event) => {
   try {
     const result = await dynamoDb.get(params).promise();
     if (!result.Item) {
-      return { statusCode: 404, body: JSON.stringify({ error: 'Item not found' }) };
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ error: 'Item not found' })
+      };
     }
-    return { statusCode: 200, body: JSON.stringify(result.Item) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Item)
+    };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: `Could not retrieve item: ${error}` }) };
+    // Log the error message to AWS
+    console.error(`Error retrieving item with id ${event.pathParameters.id}:`, error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Could not retrieve item' })
+    };
   }
 };
 
@@ -65,9 +81,11 @@ module.exports.listFeatureFlags = async (event) => {
       body: JSON.stringify(result.Items),
     };
   } catch (error) {
+    // Log the error message to AWS
+    console.error('Error retrieving items:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: `Could not retrieve items: ${error}` }),
+      body: JSON.stringify({ error: 'Could not retrieve items' }),
     };
   }
 };
@@ -92,9 +110,17 @@ module.exports.updateFeatureFlag = async (event) => {
 
   try {
     const result = await dynamoDb.update(params).promise();
-    return { statusCode: 200, body: JSON.stringify(result.Attributes) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Attributes)
+    };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: `Could not update item: ${error}` }) };
+    // Log the error message to AWS
+    console.error('Error updating item:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: `Could not update item: ${error}` })
+    };
   }
 };
 
@@ -109,8 +135,16 @@ module.exports.deleteFeatureFlag = async (event) => {
 
   try {
     await dynamoDb.delete(params).promise();
-    return { statusCode: 200, body: JSON.stringify({ message: 'Item deleted successfully' }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Item deleted successfully' })
+    };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: `Could not delete item: ${error}` }) };
+    // Log the error message to AWS
+    console.error(`Error deleting item with ${event.pathParameters.id}:`, error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: `Could not delete item: ${error}` })
+    };
   }
 };
