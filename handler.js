@@ -53,7 +53,7 @@ module.exports.getFeatureFlag = async (event) => {
 };
 
 // List all feature flags
-module.exports.listFeatureFlags = async () => {
+module.exports.listFeatureFlags = async (event) => {
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
   };
