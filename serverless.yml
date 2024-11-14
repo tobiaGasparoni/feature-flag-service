@@ -59,6 +59,14 @@ functions:
           method: get
           cors: true
 
+  listFeatureFlags:
+    handler: src.handler.listFeatureFlags
+    events:
+      - http:
+          path: featureFlags
+          method: get
+          cors: true
+
   updateFeatureFlag:
     handler: src.handler.updateFeatureFlag
     events:

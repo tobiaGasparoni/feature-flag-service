@@ -52,6 +52,26 @@ module.exports.getFeatureFlag = async (event) => {
   }
 };
 
+// List all feature flags
+module.exports.listFeatureFlags = async () => {
+  const params = {
+    TableName: process.env.FEATURE_FLAGS_TABLE,
+  };
+
+  try {
+    const result = await dynamoDb.scan(params).promise();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Items),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Could not retrieve items' }),
+    };
+  }
+};
+
 // Update a feature flag by ID
 module.exports.updateFeatureFlag = async (event) => {
   const data = JSON.parse(event.body);
