@@ -1,6 +1,6 @@
 // __tests__/createFeatureFlag.test.js
 const AWS = require('aws-sdk');
-const handler = require('../src/handler');
+const handler = require('../handler');
 const { v4: uuidv4 } = require('uuid');
 
 // Mock AWS SDK DynamoDB DocumentClient
