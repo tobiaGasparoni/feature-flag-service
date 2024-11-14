@@ -28,7 +28,7 @@ module.exports.createFeatureFlag = async (event) => {
       }),
     };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Could not create item' }) };
+    return { statusCode: 500, body: JSON.stringify({ error: `Could not create item: ${error}` }) };
   }
 };
 
@@ -48,7 +48,7 @@ module.exports.getFeatureFlag = async (event) => {
     }
     return { statusCode: 200, body: JSON.stringify(result.Item) };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Could not retrieve item' }) };
+    return { statusCode: 500, body: JSON.stringify({ error: `Could not retrieve item: ${error}` }) };
   }
 };
 
@@ -67,7 +67,7 @@ module.exports.listFeatureFlags = async (event) => {
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Could not retrieve items' }),
+      body: JSON.stringify({ error: `Could not retrieve items: ${error}` }),
     };
   }
 };
@@ -94,7 +94,7 @@ module.exports.updateFeatureFlag = async (event) => {
     const result = await dynamoDb.update(params).promise();
     return { statusCode: 200, body: JSON.stringify(result.Attributes) };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Could not update item' }) };
+    return { statusCode: 500, body: JSON.stringify({ error: `Could not update item: ${error}` }) };
   }
 };
 
@@ -111,6 +111,6 @@ module.exports.deleteFeatureFlag = async (event) => {
     await dynamoDb.delete(params).promise();
     return { statusCode: 200, body: JSON.stringify({ message: 'Item deleted successfully' }) };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Could not delete item' }) };
+    return { statusCode: 500, body: JSON.stringify({ error: `Could not delete item: ${error}` }) };
   }
 };
