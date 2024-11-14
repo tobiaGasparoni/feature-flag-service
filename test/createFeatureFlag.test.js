@@ -40,6 +40,7 @@ describe('createFeatureFlag', () => {
 
     const response = JSON.parse(result.body)
     expect(response.message).toEqual('Item created successfully')
+    expect(response.newItemData.id).toEqual(mockId)
     expect(response.newItemData.name).toEqual('New Feature')
     expect(response.newItemData.isEnabled).toEqual(false)
     expect(response.newItemData.createdAt).toBeGreaterThan(0)
@@ -55,10 +56,12 @@ describe('createFeatureFlag', () => {
     });
   });
 
-  test('returns 400 if name is empty or null', async () => {
+  test.each([
+    { name: ''}, { name: null}
+  ])('returns 400 if name is empty or null', async ({ name }) => {
     // Arrange
     const mockEvent = {
-      body: JSON.stringify({ name: '' }),
+      body: JSON.stringify({ name }),
     };
 
     // Act
