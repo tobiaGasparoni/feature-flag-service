@@ -44,7 +44,7 @@ resources:
 
 functions:
   createFeatureFlag:
-    handler: handler.createFeatureFlag
+    handler: src.handler.createFeatureFlag
     events:
       - http:
           path: featureFlags
@@ -52,7 +52,7 @@ functions:
           cors: true
 
   getFeatureFlag:
-    handler: handler.getFeatureFlag
+    handler: src.handler.getFeatureFlag
     events:
       - http:
           path: featureFlags/{id}
@@ -60,7 +60,7 @@ functions:
           cors: true
 
   updateFeatureFlag:
-    handler: handler.updateFeatureFlag
+    handler: src.handler.updateFeatureFlag
     events:
       - http:
           path: featureFlags/{id}
@@ -68,7 +68,7 @@ functions:
           cors: true
 
   deleteFeatureFlag:
-    handler: handler.deleteFeatureFlag
+    handler: src.handler.deleteFeatureFlag
     events:
       - http:
           path: featureFlags/{id}
