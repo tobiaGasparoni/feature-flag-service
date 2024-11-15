@@ -18,6 +18,7 @@ provider:
         - "dynamodb:GetItem"
         - "dynamodb:UpdateItem"
         - "dynamodb:DeleteItem"
+        - "dynamodb:Scan"
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.FEATURE_FLAGS_TABLE}"
 
 custom:
@@ -43,34 +44,42 @@ resources:
           WriteCapacityUnits: 5
 
 functions:
-  createItem:
-    handler: handler.createItem
+  createFeatureFlag:
+    handler: index.createFeatureFlag
     events:
       - http:
-          path: items
+          path: featureFlags
           method: post
           cors: true
 
-  getItem:
-    handler: handler.getItem
+  getFeatureFlag:
+    handler: index.getFeatureFlag
     events:
       - http:
-          path: items/{id}
+          path: featureFlags/{id}
           method: get
           cors: true
 
-  updateItem:
-    handler: handler.updateItem
+  listFeatureFlags:
+    handler: index.listFeatureFlags
     events:
       - http:
-          path: items/{id}
+          path: featureFlags
+          method: get
+          cors: true
+
+  updateFeatureFlag:
+    handler: index.updateFeatureFlag
+    events:
+      - http:
+          path: featureFlags/{id}
           method: put
           cors: true
 
-  deleteItem:
-    handler: handler.deleteItem
+  deleteFeatureFlag:
+    handler: index.deleteFeatureFlag
     events:
       - http:
-          path: items/{id}
+          path: featureFlags/{id}
           method: delete
           cors: true
