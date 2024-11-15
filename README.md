@@ -23,6 +23,8 @@ Additionally, it also handles provisioning of a DynamoDB database that is used f
  - `PUT /featureFlags/:featureFlagId` to update the feature flag with id `featureFlagId`.
  - `DELETE /featureFlags/:featureFlagId` to delete the feature flag with id `featureFlagId`.
 
+## Why Feature Flags?
+
 ## Lambda functions
 
 Each API endpoint is related to an AWS Lambda function. In the following image, you will see the listed Lambda functions in the AWS platform:
