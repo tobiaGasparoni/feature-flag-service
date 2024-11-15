@@ -28,7 +28,7 @@ const createFeatureFlag = async (event) => {
     TableName: process.env.FEATURE_FLAGS_TABLE,
     Item: {
       id: uuidv4(),
-      name: data.name,
+      name: 'JIRA-TICKET: ' + data.name,
       isEnabled: false,
       createdAt: Date.now()
     },
