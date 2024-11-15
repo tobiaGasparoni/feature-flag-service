@@ -44,9 +44,15 @@ In the following video, you will see how a modification in the code is pushed to
 
 ### Code explanation
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/mpAxX74sotY/0.jpg)](https://www.youtube.com/watch?v=mpAxX74sotY)
+
 ### Separate environments
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1RwBB1iDvNE/0.jpg)](https://www.youtube.com/watch?v=1RwBB1iDvNE)
+
 ### Git flow
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/6k9WepfQZ2A/0.jpg)](https://www.youtube.com/watch?v=6k9WepfQZ2A)
 
 ## Future work
 
