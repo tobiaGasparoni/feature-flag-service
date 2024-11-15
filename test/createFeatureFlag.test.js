@@ -25,7 +25,7 @@ describe('createFeatureFlag', () => {
     uuidv4.mockReturnValue(mockId);
 
     const mockEvent = {
-      body: JSON.stringify({ name: 'JIRA-TICKET: New Feature' }),
+      body: JSON.stringify({ name: 'New Feature' }),
     };
 
     putMock.mockReturnValue({
@@ -49,7 +49,7 @@ describe('createFeatureFlag', () => {
       TableName: process.env.FEATURE_FLAGS_TABLE,
       Item: {
         id: mockId,
-        name: 'New Feature',
+        name: 'JIRA-TICKET: New Feature',
         isEnabled: false,
         createdAt: expect.any(Number),
       },
