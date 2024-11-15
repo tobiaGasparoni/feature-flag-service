@@ -63,7 +63,8 @@ These are some aspects of the project I would have liked to add before deliverin
 In the current state of the project, only the createFeatureFlag function is tested. Ideally, of course, all the functions are tested in an equally excruciating fashion. With more time, that would be the case. The objective of the challenge was, anyway, to prove that I could:
 1. Create unit tests.
 2. Include the tests as a step of deployment.
-Such objective was achieved.
+
+Such objectives was achieved.
 
 ### Integration tests
 
