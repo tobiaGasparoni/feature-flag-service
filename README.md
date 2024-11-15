@@ -38,6 +38,14 @@ To automate the testing and deployment steps, Github Actions was used. For every
 
 In the following video, you will see how a modification in the code is pushed to the `stg` branch and therefore deployment in the STG functions. Then, by merging a Pull Request from the `stg` branch to the `main` branch, another pipeline will begin to deploy the PRD functions.
 
+## Videos
+
+### Code explanation
+
+### Separate environments
+
+### Git flow
+
 ## Future work
 
 ### More unit test converage
@@ -47,3 +55,6 @@ In the following video, you will see how a modification in the code is pushed to
 
 
 ### Better automated git flow
+
+
+### Lambda Functions that cover more edge cases
