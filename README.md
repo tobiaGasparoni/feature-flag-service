@@ -51,7 +51,7 @@ curl https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags
 
 ```
 curl -H 'Content-Type: application/json' \
-      -d '{ "name": "<YOUR FF NAME HERE>" }' \
+      -d '{ "name": "<YOUR-FF-NAME-HERE>" }' \
       -X POST \
       https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags
 ```
@@ -61,7 +61,7 @@ curl -H 'Content-Type: application/json' \
 4. Get feature flag with the id provided in the step 2's response:
 
 ```
-curl https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags/<NEW FLAG ID HERE>
+curl https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags/<NEW-FLAG-ID-HERE>
 ```
 
 5. Update the isEnabled attribute:
@@ -70,7 +70,7 @@ curl https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags/<NE
 curl -H 'Content-Type: application/json' \
       -d '{ "isEnabled": true }' \
       -X PUT \
-      https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags/<NEW FLAG ID HERE>
+      https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags/<NEW-FLAG-ID-HERE>
 ```
 
 7. Again get the feature flag by id to verify the change.
@@ -78,7 +78,7 @@ curl -H 'Content-Type: application/json' \
 8. Delete the flag:
 
 ```
-curl -X DELETE https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags/<NEW FLAG ID HERE>
+curl -X DELETE https://a23n1etrl6.execute-api.us-east-1.amazonaws.com/prd/featureFlags/<NEW-FLAG-ID-HERE>
 ```
 
 10. Again list all feature flags to verify the correct deletion.
@@ -96,15 +96,11 @@ In the following video, you will see how a modification in the code is pushed to
 
 ### Code explanation
 
-Click [here](https://www.youtube.com/watch?v=mpAxX74sotY) to view the video.
+Click [here](https://youtu.be/zkXB8_eJMdw) to view the video.
 
-### Separate environments
+### Git flow and STG and PRD environments
 
-Click [here](https://www.youtube.com/watch?v=1RwBB1iDvNE) to view the video.
-
-### Git flow
-
-Click [here](https://www.youtube.com/watch?v=6k9WepfQZ2A) to view the video.
+Click [here]() to view the video.
 
 ## Future work
 
