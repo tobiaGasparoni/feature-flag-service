@@ -49,7 +49,7 @@ describe('createFeatureFlag', () => {
       TableName: process.env.FEATURE_FLAGS_TABLE,
       Item: {
         id: mockId,
-        name: 'New Feature',
+        name: 'JIRA-TICKET: New Feature',
         isEnabled: false,
         createdAt: expect.any(Number),
       },
