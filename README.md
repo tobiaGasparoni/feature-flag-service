@@ -44,25 +44,27 @@ In the following video, you will see how a modification in the code is pushed to
 
 ### Code explanation
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/mpAxX74sotY/0.jpg)](https://www.youtube.com/watch?v=mpAxX74sotY)
+Click [here](https://www.youtube.com/watch?v=mpAxX74sotY) to view the video.
 
 ### Separate environments
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/1RwBB1iDvNE/0.jpg)](https://www.youtube.com/watch?v=1RwBB1iDvNE)
+Click [here](https://www.youtube.com/watch?v=1RwBB1iDvNE) to view the video.
 
 ### Git flow
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/6k9WepfQZ2A/0.jpg)](https://www.youtube.com/watch?v=6k9WepfQZ2A)
+Click [here](https://www.youtube.com/watch?v=6k9WepfQZ2A) to view the video.
 
 ## Future work
 
+These are some aspects of the project I would have liked to add before delivering it. So their absence is due to lack of knowledge of the Serverless Framework or time. 
+
 ### More unit test converage
 
+In the current state of the project, only the createFeatureFlag function is tested. Ideally, of course, all the functions are tested in an equally excruciating fashion. With more time, that would be the case. The objective of the challenge was, anyway, to prove that I could:
+1. Create unit tests.
+2. Include the tests as a step of deployment.
+Such objective was achieved.
 
 ### Integration tests
 
-
-### Better automated git flow
-
-
-### Lambda Functions that cover more edge cases
+Apparently [there si a way](https://medium.com/@sassenthusiast/serverless-simplified-integrating-docker-containers-into-aws-lambda-via-serverless-yml-cdef9be1681e) to involve integration tests in the deployment pipeline. Their absence is due to personal time constraints. I would normally use Docker and internal scripts to simulate the DynamoDB and Lambda functions.
