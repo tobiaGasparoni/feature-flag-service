@@ -25,7 +25,7 @@ describe('createFeatureFlag', () => {
     uuidv4.mockReturnValue(mockId);
 
     const mockEvent = {
-      body: JSON.stringify({ name: 'New Feature' }),
+      body: JSON.stringify({ name: 'JIRA-TICKET: New Feature' }),
     };
 
     putMock.mockReturnValue({
@@ -41,7 +41,7 @@ describe('createFeatureFlag', () => {
     const response = JSON.parse(result.body)
     expect(response.message).toEqual('Item created successfully')
     expect(response.newItemData.id).toEqual(mockId)
-    expect(response.newItemData.name).toEqual('New Feature')
+    expect(response.newItemData.name).toEqual('JIRA-TICKET: New Feature')
     expect(response.newItemData.isEnabled).toEqual(false)
     expect(response.newItemData.createdAt).toBeGreaterThan(0)
 
