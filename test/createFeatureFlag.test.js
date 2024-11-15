@@ -41,7 +41,7 @@ describe('createFeatureFlag', () => {
     const response = JSON.parse(result.body)
     expect(response.message).toEqual('Item created successfully')
     expect(response.newItemData.id).toEqual(mockId)
-    expect(response.newItemData.name).toEqual('JIRA-TICKET: New Feature')
+    expect(response.newItemData.name).toEqual('New Feature')
     expect(response.newItemData.isEnabled).toEqual(false)
     expect(response.newItemData.createdAt).toBeGreaterThan(0)
 
@@ -49,7 +49,7 @@ describe('createFeatureFlag', () => {
       TableName: process.env.FEATURE_FLAGS_TABLE,
       Item: {
         id: mockId,
-        name: 'JIRA-TICKET: New Feature',
+        name: 'New Feature',
         isEnabled: false,
         createdAt: expect.any(Number),
       },
