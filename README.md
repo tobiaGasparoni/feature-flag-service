@@ -100,7 +100,7 @@ Click [here](https://youtu.be/zkXB8_eJMdw) to view the video.
 
 ### Git flow and STG and PRD environments
 
-Click [here]() to view the video.
+Click [here](https://youtu.be/8Di5QcnnwJU) to view the video.
 
 ## Future work
 
