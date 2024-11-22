@@ -83,6 +83,3 @@ functions:
           path: featureFlags/{id}
           method: delete
           cors: true
-
-plugins:
-  - serverless-plugin-typescript
