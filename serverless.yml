@@ -46,6 +46,8 @@ resources:
 functions:
   createFeatureFlag:
     handler: index.createFeatureFlag
+    package:
+      individually: true
     events:
       - http:
           path: featureFlags
@@ -54,6 +56,8 @@ functions:
 
   getFeatureFlag:
     handler: index.getFeatureFlag
+    package:
+      individually: true
     events:
       - http:
           path: featureFlags/{id}
@@ -62,6 +66,8 @@ functions:
 
   listFeatureFlags:
     handler: index.listFeatureFlags
+    package:
+      individually: true
     events:
       - http:
           path: featureFlags
@@ -70,6 +76,8 @@ functions:
 
   updateFeatureFlag:
     handler: index.updateFeatureFlag
+    package:
+      individually: true
     events:
       - http:
           path: featureFlags/{id}
@@ -78,6 +86,8 @@ functions:
 
   deleteFeatureFlag:
     handler: index.deleteFeatureFlag
+    package:
+      individually: true
     events:
       - http:
           path: featureFlags/{id}
