@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const { v4: uuidv4 } = require('uuid');
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 /**
  * Creates a new feature flag entry in the DynamoDB table specified by the 
@@ -13,8 +14,15 @@ const { v4: uuidv4 } = require('uuid');
  *   - `400` status code if the `name` is empty or null.
  *   - `500` status code if there is a server error.
  */
-const createFeatureFlag = async (event) => {
+const createFeatureFlag = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // Parse the request body and validate the `name` property
+  if (event.body === null) {
+    console.error('Endpoint event is null');
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Endpoint event is null' })
+    };
+  }
   const data = JSON.parse(event.body);
   if (data.name === null || data.name === '') {
     return {

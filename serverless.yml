@@ -21,10 +21,19 @@ provider:
         - "dynamodb:Scan"
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.FEATURE_FLAGS_TABLE}"
 
+plugins:
+  - serverless-esbuild
+
 custom:
   tableName:
     stg: "feature-flags-table-stg"
     prd: "feature-flags-table-prd"
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    target: "node20"
+    outdir: "dist"
 
 # Define resources, including DynamoDB table
 resources:
@@ -45,7 +54,7 @@ resources:
 
 functions:
   createFeatureFlag:
-    handler: index.createFeatureFlag
+    handler: dist/index.createFeatureFlag
     package:
       individually: true
     events:
@@ -55,7 +64,7 @@ functions:
           cors: true
 
   getFeatureFlag:
-    handler: index.getFeatureFlag
+    handler: dist/index.getFeatureFlag
     package:
       individually: true
     events:
@@ -65,7 +74,7 @@ functions:
           cors: true
 
   listFeatureFlags:
-    handler: index.listFeatureFlags
+    handler: dist/index.listFeatureFlags
     package:
       individually: true
     events:
@@ -75,7 +84,7 @@ functions:
           cors: true
 
   updateFeatureFlag:
-    handler: index.updateFeatureFlag
+    handler: dist/index.updateFeatureFlag
     package:
       individually: true
     events:
@@ -85,7 +94,7 @@ functions:
           cors: true
 
   deleteFeatureFlag:
-    handler: index.deleteFeatureFlag
+    handler: dist/index.deleteFeatureFlag
     package:
       individually: true
     events:
