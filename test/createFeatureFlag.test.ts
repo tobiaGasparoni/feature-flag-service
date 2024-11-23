@@ -2,6 +2,7 @@
 const AWS = require('aws-sdk');
 const handler = require('../index');
 const { v4: uuidv4 } = require('uuid');
+require('jest');
 
 // Mock AWS SDK DynamoDB DocumentClient
 const putMock = jest.fn();
