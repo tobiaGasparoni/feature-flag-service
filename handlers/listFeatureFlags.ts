@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 /**
  * Lists all feature flags in the DynamoDB table specified by the 
@@ -10,7 +11,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
  *   - `200` status code with an array of feature flags in the body if successful.
  *   - `500` status code if there is a server error.
  */
-const listFeatureFlags = async (event) => {
+const listFeatureFlags = async (): Promise<APIGatewayProxyResult> => {
   // Define parameters for DynamoDB `scan` operation
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
@@ -25,10 +26,10 @@ const listFeatureFlags = async (event) => {
     };
   } catch (error) {
     // Log the error and return a 500 status code with an error message
-    console.error('Error retrieving items:', error);
+    console.error('Error retrieving feature flags:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Could not retrieve items' }),
+      body: JSON.stringify({ error: 'Could not retrieve feature flags' }),
     };
   }
 };

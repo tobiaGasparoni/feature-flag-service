@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 /**
  * Retrieves a feature flag by ID from the DynamoDB table specified by the 
@@ -13,8 +14,15 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
  *   - `404` status code if the item is not found.
  *   - `500` status code if there is a server error.
  */
-const getFeatureFlag = async (event) => {
+const getFeatureFlag = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // Define parameters for DynamoDB `get` operation
+  if (event.pathParameters === null) {
+    console.error('Error retrieving feature flag: event.pathParameters === null');
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Could not retrieve feature flag' })
+    };
+  }
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
     Key: {
@@ -28,7 +36,7 @@ const getFeatureFlag = async (event) => {
     if (!result.Item) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ error: 'Item not found' })
+        body: JSON.stringify({ error: 'Feature flag not found' })
       };
     }
     return {
@@ -37,10 +45,10 @@ const getFeatureFlag = async (event) => {
     };
   } catch (error) {
     // Log the error and return a 500 status code with an error message
-    console.error(`Error retrieving item with id ${event.pathParameters.id}:`, error);
+    console.error(`Error retrieving feature flag with id ${event.pathParameters.id}:`, error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Could not retrieve item' })
+      body: JSON.stringify({ error: 'Could not retrieve feature flag' })
     };
   }
 };

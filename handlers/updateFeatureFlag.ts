@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 /**
  * Updates the `isEnabled` status of a specific feature flag by ID.
@@ -14,11 +15,25 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
  *   - `200` status code with updated attributes in the body if the update succeeds.
  *   - `500` status code if there is a server error.
  */
-const updateFeatureFlag = async (event) => {
+const updateFeatureFlag = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // Parse the JSON body to get the update data
+  if (event.body === null) {
+    console.error('Endpoint event is null');
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Endpoint event is null' })
+    };
+  }
   const data = JSON.parse(event.body);
 
   // Define parameters for the DynamoDB `update` operation
+  if (event.pathParameters === null) {
+    console.error('Error updating feature flag: event.pathParameters === null');
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Could not updating feature flag' })
+    };
+  }
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
     Key: {
@@ -43,10 +58,10 @@ const updateFeatureFlag = async (event) => {
     };
   } catch (error) {
     // Log the error and return a 500 status code with an error message
-    console.error('Error updating item:', error);
+    console.error('Error updating feature flag:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: `Could not update item: ${error}` })
+      body: JSON.stringify({ error: `Could not update feature flag: ${error}` })
     };
   }
 };

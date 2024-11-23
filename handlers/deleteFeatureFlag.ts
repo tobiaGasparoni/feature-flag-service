@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 /**
  * Deletes a feature flag by its ID.
@@ -13,8 +14,15 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
  *   - `200` status code with a success message if the deletion succeeds.
  *   - `500` status code if there is a server error.
  */
-const deleteFeatureFlag = async (event) => {
+const deleteFeatureFlag = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // Define parameters for the DynamoDB `delete` operation
+  if (event.pathParameters === null) {
+    console.error('Error deleting feature flag: event.pathParameters === null');
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Could not delete feature flag' })
+    };
+  }
   const params = {
     TableName: process.env.FEATURE_FLAGS_TABLE,
     Key: {
@@ -27,14 +35,14 @@ const deleteFeatureFlag = async (event) => {
     await dynamoDb.delete(params).promise();
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Item deleted successfully' })
+      body: JSON.stringify({ message: 'Feature flag deleted successfully' })
     };
   } catch (error) {
     // Log the error and return a 500 status code with an error message
     console.error(`Error deleting item with id ${event.pathParameters.id}:`, error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: `Could not delete item: ${error}` })
+      body: JSON.stringify({ error: 'Could not delete feature flag' })
     };
   }
 };
