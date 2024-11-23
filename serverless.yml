@@ -21,9 +21,6 @@ provider:
         - "dynamodb:Scan"
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.FEATURE_FLAGS_TABLE}"
 
-plugins:
-  - serverless-esbuild
-
 custom:
   tableName:
     stg: "feature-flags-table-stg"
