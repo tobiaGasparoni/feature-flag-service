@@ -11,7 +11,7 @@ authorName: 'Serverless, Inc.'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 -->
 
-# Feature Flag Service built with Serverless Framework Node Express API on AWS
+# [Job Application Project] Feature Flag Service built with Serverless Framework Node Express API on AWS
 
 This template demonstrates how a REST API revolving around feature flags could be built using Node Express API service, backed by DynamoDB table, running on AWS Lambda using the Serverless Framework.
 
